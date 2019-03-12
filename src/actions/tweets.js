@@ -10,12 +10,12 @@ export function receiveTweets (tweets) {
   }
 }
 
-function toggleTweet({ id, authedUser, liked }) {
+function toggleTweet({ id, authedUser, hasLiked }) {
   return {
     type: TOGGLE_TWEET,
     id,
     authedUser,
-    liked,
+    hasLiked,
   }
 }
 
