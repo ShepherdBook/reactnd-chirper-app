@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { handleCreateTweet } from '../actions/tweets';
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 class NewTweet extends Component {
   state ={
@@ -17,10 +19,13 @@ class NewTweet extends Component {
     e.preventDefault()
 
     const { text } = this.state
+    const { dispatch, authedUser } = this.props
 
-    // todo: add tweet to the store
-
-    console.log('New tweet: ', text)
+    dispatch (handleCreateTweet({
+      text,
+      authedUser,
+      replyingTo: null
+    }))
 
     this.setState(() => ({
       text: ''
