@@ -43,13 +43,6 @@ function createTweet(tweet) {
   }
 }
 
-function deleteTweet({ id }) {
-  return {
-    type: DELETE_TWEET,
-    id
-  }
-}
-
 export function handleCreateTweet (text, replyingTo) {
   return (dispatch, getState) => {
     const { authedUser } = getState()
