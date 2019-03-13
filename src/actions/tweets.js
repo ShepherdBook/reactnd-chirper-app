@@ -1,4 +1,5 @@
 import { saveLikeToggle, saveTweet } from '../utils/api'
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 export const RECEIVE_TWEETS = 'RECEIVE_TWEETS'
 export const TOGGLE_TWEET = 'TOGGLE_TWEET'
@@ -35,12 +36,10 @@ export function handleToggleTweet (info) {
   }
 }
 
-function createTweet({ text, author, replyingTo }) {
+function createTweet(tweet) {
   return {
     type: CREATE_TWEET,
-    text,
-    author,
-    replyingTo
+    tweet
   }
 }
 
@@ -51,15 +50,18 @@ function deleteTweet({ id }) {
   }
 }
 
-export function handleCreateTweet (info) {
-  return (dispatch) => {
-    dispatch(createTweet(info))
+export function handleCreateTweet (text, replyingTo) {
+  return (dispatch, getState) => {
+    const { authedUser } = getState()
 
-    return saveTweet(info)
-      .catch((error) => {
-        console.warn('Error in handleCreateTweet: ', error)
-        dispatch(deleteTweet(info))
-        alert('Could not create tweet, try again')
-      })
+     dispatch(showLoading())
+
+     return saveTweet({
+      text,
+      author: authedUser,
+      replyingTo
+    })
+      .then((tweet) => dispatch(createTweet(tweet)))
+      .then(() => dispatch(hideLoading()))
   }
 }

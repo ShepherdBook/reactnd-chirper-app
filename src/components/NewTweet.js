@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { handleCreateTweet } from '../actions/tweets';
-import { showLoading, hideLoading } from 'react-redux-loading'
+import { connect } from 'react-redux'
 
 class NewTweet extends Component {
   state ={
@@ -19,13 +19,9 @@ class NewTweet extends Component {
     e.preventDefault()
 
     const { text } = this.state
-    const { dispatch, authedUser } = this.props
+    const { dispatch, id } = this.props
 
-    dispatch (handleCreateTweet({
-      text,
-      authedUser,
-      replyingTo: null
-    }))
+    dispatch(handleCreateTweet(text, id))
 
     this.setState(() => ({
       text: ''
@@ -65,4 +61,4 @@ class NewTweet extends Component {
   }
 }
 
-export default NewTweet
+export default connect()(NewTweet)

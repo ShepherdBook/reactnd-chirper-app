@@ -22,9 +22,22 @@ export default function tweets(state = {}, action) {
         }
       }
     case CREATE_TWEET:
+      const { tweet } = action
+
+      let replyingTo = {}
+      if (tweet.replyingTo !== null) { // If the new tweet is a reply
+        replyingTo = {
+          [tweet.replyingTo]: { // Find the tweet being replied to
+            ...state[tweet.replyingTo], // Get the existing properties of it
+            replies: state[tweet.replyingTo].replies.concat([tweet.id]) // Set the replies equal to the old replies plus this tweet's id
+          }
+        }
+      } 
+
       return {
         ...state,
-        ...state.tweets.concat(action)
+        [tweet.id]: tweet,
+        ...replyingTo
       }
     case DELETE_TWEET:
       return {
